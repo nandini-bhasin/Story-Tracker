@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "UTF-8" />
+        <title>Library API</title>
+
+        <!-- font awesome kit -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+        <!-- Boottrap css cdn -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Custom css file -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+      
+        <nav class="navbar">
+            <span class="navbar-brand mb-0 h1" style="margin-left: 10%; font-weight: 700; font-size: x-large;">Library Catalogue</span>
+            <div class="top-btn">
+            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#newBook"  data-backdrop="static" data-keyboard="false">Add new book</button>
+            <button type="button" class="btn btn-danger btn-sm">Go To Movies</button>
+            </div>
+          </nav>
+
+      <!-- Main Container -->
+      <div class="container">
+          
+          <!-- <h1>Library Management System</h1> -->
+          <form class="form-inline">
+            <input type="text" id="bookId" name="bookId" placeholder="Search for a book" class="form-control form-control-sm" style="width: 40%;">
+            <button type="button" class="btn btn-success btn-sm top-btn" onclick="getByName(bookId)" style="margin-left: 10px;" id="searchBtn">Search</button>
+            <!-- <button type="button" class="btn btn-success btn-sm top-btn" data-toggle="modal" data-target="#newBook">Add new book</button> -->
+          </form>
+
+          <!-- Section that displays all the info -->
+          <div class="row">
+              <div class="card-columns" id="demo"></div>
+          </div>
+          <div id="demo2"></div>
+
+      </div>
+
+
+      <!-- Modal for new book -->
+      <div class="modal fade" id="newBook" tabindex="-1" role="dialog" aria-labelledby="newBookLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="newBookLabel">New Book</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+              <!-- Form -->
+                <form method="POST">
+                <div class="form-group">
+                  <label for="title">Title</label>
+                  <input type="text" class="form-control form-control-sm" id="title" placeholder="Give Book Title" required>
+                </div>
+                <div class="form-group">
+                  <label for="author">Author</label>
+                  <input type="text" class="form-control form-control-sm" id="author" placeholder="Give Author" required>
+                </div>
+                <div class="form-group">
+                  <label for="publisher">Publisher</label>
+                  <input type="text" class="form-control form-control-sm" id="publisher" placeholder="Give Publisher">
+                </div>
+                <div class="form-group">
+                  <label for="language">Language</label>
+                  <input type="text" class="form-control form-control-sm" id="language" placeholder="Give Language">
+                </div>
+                <div class="form-group">
+                  <label for="genre">Genre</label>
+                  <input type="text" class="form-control form-control-sm" id="genre" placeholder="Genre comma separated">
+                </div>
+                <div class="form-group">
+                  <label for="image">Image url</label>
+                  <input type="text" class="form-control form-control-sm" id="image" placeholder="Give image url" required>
+                </div>
+                <div class="form-group">
+                  <label for="price">Price</label>
+                  <input type="number" class="form-control form-control-sm" id="price" placeholder="Give Price">
+                </div>
+                <div class="form-group">
+                  <label for="desc">Synopsis</label>
+                  <textarea class="form-control form-control-sm" id="desc" placeholder="Give Synopsis" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="rating">Rating</label>
+                  <input type="number" class="form-control form-control-sm" id="rating" placeholder="Give Rating (1-5)" min="0" max="5" step=".01" required>
+                  <span id="rateMe1"></span>
+                </div>
+                <div class="form-group form-check">
+                  <input type="checkbox" class="form-check-input" id="paperback">
+                  <label class="form-check-label" for="paperback">Paperback</label>
+                </div>
+                <div class="form-group form-check">
+                  <input type="checkbox" class="form-check-input" id="available" checked>
+                  <label class="form-check-label" for="available">Available</label>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-success" onclick="addNewBook()" data-dismiss="modal">Add</button>
+                  <!-- <button type="submit" class="btn btn-primary">Add</button> -->
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Modal for new comment -->
+      <div class="modal fade" id="newComment" tabindex="-1" role="dialog" aria-labelledby="newCommentLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="newCommentLabel">New Comment</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+              <!-- Form -->
+                <form method="POST">
+                <div class="form-group">
+                  <label for="user">User</label>
+                  <input type="text" class="form-control form-control-sm" id="user" placeholder="Give your Name" required>
+                </div>
+                <div class="form-group">
+                  <label for="subject">Subject</label>
+                  <input type="text" class="form-control form-control-sm" id="subject" placeholder="Give subject" required>
+                </div>
+                
+                <div class="form-group">
+                  <label for="body">Comment</label>
+                  <textarea class="form-control form-control-sm" id="body" placeholder="Give Comment" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="commentRating">Rating</label>
+                  <input type="number" class="form-control form-control-sm" id="commentRating" placeholder="Give Rating (1-5)" required>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-success" onclick="addNewComment()" data-dismiss="modal">Add</button>
+                  <!-- <button type="submit" class="btn btn-primary">Add</button> -->
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div></div>
+
+
+      <!-- Modal for issuing a book -->
+      <div class="modal fade" id="issueBook" tabindex="-1" role="dialog" aria-labelledby="issueBookLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="issueBookLabel">Issue Book</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+              <!-- Form -->
+                <form>
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" class="form-control form-control-sm" id="issueName" placeholder="Give your Name" required>
+                </div>
+                <div class="form-group">
+                  <label for="rollNo">Roll No.</label>
+                  <input type="text" class="form-control form-control-sm" id="rollNo" placeholder="Give subject" required>
+                </div>
+                
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-success" onclick="issueBook()" data-dismiss="modal">Send Details</button>
+                  <!-- <button type="submit" class="btn btn-primary">Add</button> -->
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div></div>
+
+
+
+      <!-- Footer -->
+      <footer>
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 info">
+              <p>
+                <small>created by</small> <b style="font-size: large;">Nandini Bhasin</b>
+              </p>
+              <p><span>Roll no:</span> 160BTCCSE032</p>
+              <p><span>Contact:</span> 9999759963</p>
+              <p><span>Email Id:</span> bhasin.nandini@gmail.com</p>
+            </div>
+            <div class="col-lg-6 info" style="text-align: right;">
+              <p><small>Submitted to </small><b>Ms. Sherry Verma</b></p>
+              <p><span>Subject Name:</span> NoSQL</p>
+              <p><span>Subject Code:</span> 18BCS-0NS42E</p>
+            </div>
+          </div>
+          <center><small>created as a 7th semester Subject Project</small></center>
+        </div>
+      </footer>
+
+
+      <!-- Custom javascript file -->
+        <script src="index.js"></script>
+        
+        <!-- Bootstrap javascript cdn -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        
+    </body>
+</html>

@@ -1,0 +1,13 @@
+{
+    "name": "library",
+    "version": "1.0.0",
+    "dependencies": {
+        "body-parser": "*",
+        "cors": "^2.8.5",
+        "ejs": "^2.7.4",
+        "express": "*",
+        "mongojs": "^3.1.0",
+        "mongoose": "^5.7.12"
+    },
+    "author": "Nandini Bhasin"
+}

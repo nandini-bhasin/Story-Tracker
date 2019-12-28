@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css?family=Comfortaa&display=swap');
+
+h1{
+    text-align: center;
+    margin: 0.6em;
+    margin-bottom: 0.7em;
+    font-family: 'Comfortaa', cursive;
+}
+
+#demo {
+    margin-top: 1em;
+}
+
+.navbar {
+    background-color: #f8f7b4;
+    color: #065f06;
+}
+
+.container {
+    padding-top: 1em;
+    padding-bottom: 1.5em;
+}
+
+textarea {
+    white-space: pre-wrap;
+}
+
+
+
+/* Header of every page */
+.top-btn {
+    margin-left: 25%;
+    margin-right: 10%;
+}
+
+#bookId {
+    border: 1px solid rgba(21, 190, 58);
+}
+
+#bookId:focus {
+    box-shadow: 0 0 0 0.2rem rgba(21, 190, 58, 0.25);
+}
+
+
+
+/* Book cards */
+.card-columns {
+    column-count: 4;
+}
+
+.card {
+    display: inline-block;
+}
+
+.card-body {
+    padding: 0.5em;
+}
+
+.card-title {
+    text-align: center;
+    font-size: medium;
+    margin-bottom: 0.2em;
+}
+
+.card-author {
+    margin-bottom: 0;
+    font-size: small;
+}
+
+
+/* media queries */
+@media screen and (max-width: 1200px){
+    .card-columns {
+        column-count: 4;
+    }
+}
+
+@media screen and (max-width: 992px){
+    .card-columns {
+        column-count: 3;
+    }
+}
+
+@media screen and (max-width: 767px){
+    .card-columns {
+        column-count: 2;
+    }
+    .top-btn {
+        margin: auto;
+    }
+}
+
+
+/* star rating */
+.star-outer {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1em;
+}
+
+.star-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+}
+
+.star-outer::before {
+    content: "\f005 \f005 \f005 \f005 \f005";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: #ccc
+}
+
+.star-inner::before {
+    content: "\f005 \f005 \f005 \f005 \f005";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: #f8ce0b
+}
+
+.number-rating {
+    padding-left: 0.3em;
+    font-size: small;
+}
+
+
+
+/* Individual details */
+.img-fluid {
+    width: auto;
+    max-height: 23em;
+}
+
+hr {
+    /* margin: auto;
+    margin-bottom: 20px; */
+    margin: 20px auto;
+    /* width: 20%; */
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(88, 88, 88, 0), rgba(88, 88, 88, 0.75), rgba(88, 88, 88, 0));
+}
+
+.right {
+    text-align: right;
+}
+
+.price {
+    color: red;
+    font-weight: bold;
+    font-size: large;
+}
+
+.descJustify {
+    text-align: justify;
+}
+
+.btn-left {
+    float: left;
+}
+
+
+/* Comments */
+.list-group {
+    width: 80%;
+    margin: auto;
+    /* margin-top: 10px; */
+}
+
+.commentSection {
+    margin-top: 10px;
+    padding: 2em 0;
+    background-color: rgb(247, 243, 243);
+}
+
+.badge {
+    line-height: normal;
+}
+
+.commentHeading {
+    margin: auto;
+    font-weight: bold;
+}
+
+
+
+/* footer */
+footer {
+    background-color: #f8f7b4;
+}
+
+.info p {
+    margin-bottom: 0;
+}
+
+.info span {
+    font-size: small;
+    font-style: italic;
+}
