@@ -4,7 +4,7 @@ var detailed = document.getElementById("demo2");
 var data, url;
 
 
-var writtenText;
+var writtenText, btnClassPrimary;
 //set theme for the page
 const root = document.documentElement;
 switch(localStorage.getItem('theme')){
@@ -12,7 +12,8 @@ switch(localStorage.getItem('theme')){
       root.style.setProperty("--bg", "#f8f7b4");
       root.style.setProperty("--main", "#065f06");
       root.style.setProperty("--search-highlight", "#15be3a40");
-      writtenText = 'Book';
+      writtenText = 'book';
+      btnClassPrimary = 'btn-success';
       break;
     case "movies":
       root.style.setProperty("--bg", "#B3E5FC");
@@ -30,8 +31,9 @@ switch(localStorage.getItem('theme')){
 function mainPage() {
     window.scrollTo(0, 0);
     let ratings = new Object();
+    var urltext = 'http://localhost:3000/'+writtenText+'/';
 
-    xhttp.open('GET', 'http://localhost:3000/');
+    xhttp.open('GET', urltext);
     xhttp.send();
     xhttp.onload = function(){
         if(this.readyState == 4 && this.status == 200){
@@ -63,7 +65,7 @@ function mainPage() {
                                     '<span class="number-rating">'+data[i].rating+'</span><br>'+
 
                                     //button takes to detailsOfBook and passes bookId which then displays details of the book
-                                    '<button type="button" onclick="detailsOfBook(\''+data[i]._id+'\')" class="btn btn-success btn-sm">Details</button>'+
+                                    '<button type="button" onclick="detailsOfBook(\''+data[i]._id+'\')" class="btn '+ btnClassPrimary +' btn-sm">Details</button>'+
                                 '</div>'+
                             '</div>';
 

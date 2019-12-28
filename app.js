@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 var mongojs = require('mongojs');
 
 //database object
-var db = mongojs('library', ['books']);
+var db = mongojs('stories', ['book', 'movie', 'series']);
 
 
 
@@ -25,16 +25,18 @@ console.log('Server is running on port 3000...');
 
 
 
+// ** For library section -> Books ** //
+
 //GET request for all products
-app.get('/', function(req, res){
-    console.log('Fetching Books...');
+app.get('/book', function(req, res){
+    console.log("fetching book... cuz reached here");
     //docs = documents returned
-    db.books.find(function(err, docs){
+    db.book.find(function(err, docs){
         //if there is an error
-        if(err){
+        if(err){     
+            console.log(res);
             res.send(err);
         }else{
-            console.log('Sending Books...');
             //send json
             res.json(docs);
         }
@@ -45,10 +47,10 @@ app.get('/', function(req, res){
 
 
 //GET request for a specific product based on id
-app.get('/books/:id', function(req, res){
+app.get('/book/:id', function(req, res){
     console.log('Fetching Product...');
     //mongojs.ObjectId = cuz the id given here is an object id which we can access using mongojs
-    db.books.findOne({_id:mongojs.ObjectId(req.params.id)},function(err, doc){
+    db.book.findOne({_id:mongojs.ObjectId(req.params.id)},function(err, doc){
         //if there is an error
         if(err){
             res.send(err);
@@ -64,12 +66,12 @@ app.get('/books/:id', function(req, res){
 
 
 //POST request
-app.post('/books', function(req, res){
-    db.books.insert(req.body, function(err, doc){
+app.post('/book', function(req, res){
+    db.book.insert(req.body, function(err, doc){
         if(err){
             res.send(err);
         }else{
-            console.log('Adding Books...');
+            console.log('Adding Book... cuz here too');
             //send json
             res.json(doc);
         }
@@ -80,8 +82,8 @@ app.post('/books', function(req, res){
 
 
 //PUT request to add comments
-app.put('/books/:id', function(req, res){
-    db.books.findAndModify({
+app.put('/book/:id', function(req, res){
+    db.book.findAndModify({
         //find the object with this id
         query: {_id:mongojs.ObjectId(req.params.id)},
         update: { $set: { 
@@ -105,8 +107,8 @@ app.put('/books/:id', function(req, res){
 
 
 //PUT request to issue or return a book
-app.put('/books/issue/:id', function(req, res){
-    db.books.findAndModify({
+app.put('/book/issue/:id', function(req, res){
+    db.book.findAndModify({
         //find the object with this id
         query: {_id:mongojs.ObjectId(req.params.id)},
         update: { $set: { 
@@ -131,8 +133,8 @@ app.put('/books/issue/:id', function(req, res){
 
 
 //DELETE request for a specific product based on id
-app.delete('/books/:id', function(req, res){
-    db.books.remove({_id:mongojs.ObjectId(req.params.id)},function(err, doc){
+app.delete('/book/:id', function(req, res){
+    db.book.remove({_id:mongojs.ObjectId(req.params.id)},function(err, doc){
         if(err){
             res.send(err);
         }else{
