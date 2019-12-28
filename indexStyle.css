@@ -1,0 +1,17 @@
+body {
+    margin-top: 3%;
+    background-image: url(images/story4.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: right;
+    color: white;
+}
+
+.container h1 {
+    /* color: purple; */
+    font-weight: bold;
+}
+
+a {
+    margin: 0 10px;
+}

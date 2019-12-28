@@ -4,6 +4,27 @@ var detailed = document.getElementById("demo2");
 var data, url;
 
 
+var writtenText;
+//set theme for the page
+const root = document.documentElement;
+switch(localStorage.getItem('theme')){
+    case "library":
+      root.style.setProperty("--bg", "#f8f7b4");
+      root.style.setProperty("--main", "#065f06");
+      root.style.setProperty("--search-highlight", "#15be3a40");
+      writtenText = 'Book';
+      break;
+    case "movies":
+      root.style.setProperty("--bg", "#B3E5FC");
+      root.style.setProperty("--bg-text", "#37474F");
+      break;
+    case "series":
+      root.style.setProperty("--bg", "white");
+      root.style.setProperty("--bg-text", "black");
+      break;
+}
+
+
 //Function to display the main page
 //Loads all the books and displays some info for each
 function mainPage() {

@@ -12,8 +12,11 @@ h1{
 }
 
 .navbar {
-    background-color: #f8f7b4;
-    color: #065f06;
+    /* background-color: #f8f7b4;
+    color: #065f06; */
+    
+    background-color: var(--bg, #b3e5fc);
+    color: var(--main, #37474f);
 }
 
 .container {
@@ -34,11 +37,13 @@ textarea {
 }
 
 #bookId {
-    border: 1px solid rgba(21, 190, 58);
+    /* border: 1px solid #15be3a; */
+     border: 1px solid var(--main);
 }
 
 #bookId:focus {
-    box-shadow: 0 0 0 0.2rem rgba(21, 190, 58, 0.25);
+    /* box-shadow: 0 0 0 0.2rem #15be3a40; */
+    box-shadow: 0 0 0 0.2rem var(--search-highlight, #37474f);
 }
 
 
