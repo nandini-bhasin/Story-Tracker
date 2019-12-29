@@ -183,6 +183,10 @@ hr {
 
 .badge {
     line-height: normal;
+    background-image: radial-gradient(circle, var(--bg), var(--bg), var(--search-highlight));
+    color: var(--main);
+    border-radius: 15px;
+    padding: 10px 15px;
 }
 
 .commentHeading {
@@ -193,7 +197,7 @@ hr {
 
 
 /* footer */
-footer {
+/* footer {
     background-color: #f8f7b4;
 }
 
@@ -204,4 +208,4 @@ footer {
 .info span {
     font-size: small;
     font-style: italic;
-}
+} */

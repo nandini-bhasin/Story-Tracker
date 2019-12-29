@@ -4,7 +4,7 @@ var detailed = document.getElementById("demo2");
 var data, url;
 
 
-var writtenText, btnClassPrimary;
+var writtenText, btnClassPrimary, btnClassSecondary;
 //set theme for the page
 const root = document.documentElement;
 switch(localStorage.getItem('theme')){
@@ -12,8 +12,9 @@ switch(localStorage.getItem('theme')){
       root.style.setProperty("--bg", "#f8f7b4");
       root.style.setProperty("--main", "#065f06");
       root.style.setProperty("--search-highlight", "#15be3a40");
-      writtenText = 'book';
+      writtenText = 'Book';
       btnClassPrimary = 'btn-success';
+      btnClassSecondary = 'btn-warning';
       break;
     case "movies":
       root.style.setProperty("--bg", "#B3E5FC");
@@ -31,7 +32,7 @@ switch(localStorage.getItem('theme')){
 function mainPage() {
     window.scrollTo(0, 0);
     let ratings = new Object();
-    var urltext = 'http://localhost:3000/'+writtenText+'/';
+    let urltext = 'http://localhost:3000/'+writtenText.toLowerCase(writtenText)+'/';
 
     xhttp.open('GET', urltext);
     xhttp.send();
@@ -87,7 +88,7 @@ function detailsOfBook(bookId) {
     window.scrollTo(0, 0);
     let ratings = new Object();
 
-    var bookIDUrl = 'http://localhost:3000/books/' + bookId;
+    var bookIDUrl = 'http://localhost:3000/'+writtenText.toLowerCase(writtenText)+'/' + bookId;
     xhttp.open('GET', bookIDUrl);
     xhttp.send();
     xhttp.onload = function () {
@@ -113,7 +114,7 @@ function detailsOfBook(bookId) {
                                 '</div>' +
                                 '<span class="number-rating">' + url.rating + '</span><br>' +
 
-                                '<button onclick="mainPage()" class="btn btn-success btn-sm">Go Back</button>' +
+                                '<button onclick="mainPage()" class="btn '+btnClassPrimary+' btn-sm">Go Back</button>' +
                             '</div>' +
                             '<div class="col info">' +
                                 '<h3>' + url.title + '</h3>' +
@@ -128,21 +129,29 @@ function detailsOfBook(bookId) {
                                 card += '<p><b>Language: </b>' + url.language + '</p>';
                                 if(url.price)
                                 card += '<p><b>Price: </b>Rs. ' + url.price + ' /-</p>' ;
-                                if(!url.available)
-                                card += '<p><b>Issued by: </b>' + url.issuedTo.name + '</p>' ;
+                                // if(!url.available)
+                                // card += '<p><b>Issued by: </b>' + url.issuedTo.name + '</p>' ;
+                                if(url.link)
+                                card += '<p><b>Link: </b><a href="' + url.link + '"> '+url.link+'</a></p>' ;
 
                                 card += '<hr><div class="right">';
 
-                                if(url.available){
-                                    card += '<p class="price">Available</p>'+
-                                    '<button type="button" onclick="deleteBook(\'' + url._id + '\')" class="btn btn-warning btn-sm btn-left">Delete Book</button>' +
-                                    '<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#issueBook">Issue Book</button>' ;
-                                }
-                                else {
-                                    card += '<p class="price" style="color: #ccc;">Unavailable</p>'+
-                                    '<button type="button" onclick="deleteBook(\'' + url._id + '\')" class="btn btn-warning btn-sm btn-left">Delete Book</button>' +
-                                    '<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#issueBook">Return Book</button>' ;
-                                }
+                                // if(url.available){
+                                //     card += '<p class="price">Available</p>'+
+                                //     '<button type="button" onclick="deleteBook(\'' + url._id + '\')" class="btn btn-warning btn-sm btn-left">Delete Book</button>' +
+                                //     '<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#issueBook">Issue Book</button>' ;
+                                // }
+                                // else {
+                                //     card += '<p class="price" style="color: #ccc;">Unavailable</p>'+
+                                //     '<button type="button" onclick="deleteBook(\'' + url._id + '\')" class="btn btn-warning btn-sm btn-left">Delete Book</button>' +
+                                //     '<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#issueBook">Return Book</button>' ;
+                                // }
+
+                    
+                                card +=
+                                '<button type="button" onclick="deleteBook(\'' + url._id + '\')" class="btn btn-warning btn-sm btn-left">Delete '+writtenText+'</button>' +
+                                '<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#issueBook">Add to List</button>' ;
+                                
                                     
                         card += '</div>' +
                             '</div>' +
@@ -197,7 +206,7 @@ function displayComments(reviews) {
         card += '<li class="list-group-item">'+
                     '<div class="d-flex w-100 justify-content-between">'+
                     '<h5 class="mb-1">'+reviews[i].subject+'</h5>'+
-                    '<small class="badge badge-info">'+reviews[i].rating+'</small>'+
+                    '<small class="badge">'+reviews[i].rating+'</small>'+
                     '</div>'+
                     '<p class="mb-1">'+reviews[i].body+'</p>'+
                     '<small> by '+reviews[i].user+'</small>'+
@@ -271,7 +280,8 @@ function addNewBook() {
         validity(document.getElementById("image"))) {
 
 
-        xhttp.open('POST', 'http://localhost:3000/books');
+        let urlText = 'http://localhost:3000/'+writtenText.toLowerCase(writtenText)+'/';
+        xhttp.open('POST', urlText);
         xhttp.setRequestHeader('Content-type', 'application/json');
         xhttp.send(JSON.stringify(params));
         xhttp.onload = function(){
@@ -332,7 +342,7 @@ function deleteBook(bookId){
 
     //make sure delete button was not pressed by mistake
     if(confirm("Are you sure you want to delete this book from the database? This action cannot be reversed")){
-        var bookIDUrl = 'http://localhost:3000/books/'+bookId;
+        var bookIDUrl = 'http://localhost:3000/'+writtenText.toLowerCase(writtenText)+'/'+bookId;
         xhttp.open('DELETE', bookIDUrl);
         xhttp.send();
         xhttp.onload = function(){
@@ -387,7 +397,7 @@ function addNewComment() {
         }
     
         //call put request and send appended reviews
-        var bookIDUrl = 'http://localhost:3000/books/' + url._id;
+        var bookIDUrl = 'http://localhost:3000/'+writtenText.toLowerCase(writtenText)+'/' + url._id;
         xhttp.open('PUT', bookIDUrl);
         xhttp.setRequestHeader('Content-type', 'application/json');
         xhttp.send(JSON.stringify(params));
@@ -409,73 +419,6 @@ function addNewComment() {
 
 
 
-//Function to issue or return a book
-// Makes PUT Request
-function issueBook() {
-    var params = new Object();
-
-    let name = document.getElementById("issueName").value;
-    let roll = document.getElementById("rollNo").value;
-
-    if(url.available) {
-        //append new reviews in old ones
-        params = {
-            "available": false,
-            "issuedTo": {
-                "name": name,
-                "rollNo": roll
-            }
-        }
-        url.available = false;
-    }
-    else {
-        if(validate(name, roll)){
-            params = {
-                "available": true,
-                "issuedTo": ''
-            }
-            url.available = true;
-        }
-        else {
-            alert("Sorry, you are not the one who issued the book");
-            params ={
-                "available": url.available,
-                "issuedTo": url.issuedTo
-            }
-        }
-        
-    }
-
-    //call put request and send appended reviews
-    var bookIDUrl = 'http://localhost:3000/books/issue/' + url._id;
-    xhttp.open('PUT', bookIDUrl);
-    xhttp.setRequestHeader('Content-type', 'application/json');
-    xhttp.send(JSON.stringify(params));
-    xhttp.onload = function(){
-        if(this.readyState == 4 && this.status == 200){
-            url = JSON.parse(this.responseText);
-
-            detailsOfBook(url._id);
-        }    
-    }
-    document.getElementById("issueName").value = '';
-    document.getElementById("rollNo").value = '';
-}
-
-
-
-
-//Function to check if the person returning is the one who issued the book
-function validate(name, roll) {
-    if(url.issuedTo.name.toLowerCase()!=name.toLowerCase())
-        return false;
-    if(url.issuedTo.rollNo.toLowerCase()!=roll.toLowerCase())
-        return false;
-    return true;
-}
-
-
-
 
 //To check for empty fields, kinda like required for HTML form
 function validity(obj) {
@@ -484,4 +427,72 @@ function validity(obj) {
       return false;
     }
     return true;
-  }
+}
+
+
+
+
+// //Function to issue or return a book
+// // Makes PUT Request
+// function issueBook() {
+//     var params = new Object();
+
+//     let name = document.getElementById("issueName").value;
+//     let roll = document.getElementById("rollNo").value;
+
+//     if(url.available) {
+//         //append new reviews in old ones
+//         params = {
+//             "available": false,
+//             "issuedTo": {
+//                 "name": name,
+//                 "rollNo": roll
+//             }
+//         }
+//         url.available = false;
+//     }
+//     else {
+//         if(validate(name, roll)){
+//             params = {
+//                 "available": true,
+//                 "issuedTo": ''
+//             }
+//             url.available = true;
+//         }
+//         else {
+//             alert("Sorry, you are not the one who issued the book");
+//             params ={
+//                 "available": url.available,
+//                 "issuedTo": url.issuedTo
+//             }
+//         }
+        
+//     }
+
+//     //call put request and send appended reviews
+//     var bookIDUrl = 'http://localhost:3000/'+writtenText.toLowerCase+'/issue/' + url._id;
+//     xhttp.open('PUT', bookIDUrl);
+//     xhttp.setRequestHeader('Content-type', 'application/json');
+//     xhttp.send(JSON.stringify(params));
+//     xhttp.onload = function(){
+//         if(this.readyState == 4 && this.status == 200){
+//             url = JSON.parse(this.responseText);
+
+//             detailsOfBook(url._id);
+//         }    
+//     }
+//     document.getElementById("issueName").value = '';
+//     document.getElementById("rollNo").value = '';
+// }
+
+
+
+
+// //Function to check if the person returning is the one who issued the book
+// function validate(name, roll) {
+//     if(url.issuedTo.name.toLowerCase()!=name.toLowerCase())
+//         return false;
+//     if(url.issuedTo.rollNo.toLowerCase()!=roll.toLowerCase())
+//         return false;
+//     return true;
+// }
