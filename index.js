@@ -2,6 +2,7 @@ var xhttp = new XMLHttpRequest();
 var main = document.getElementById("demo");
 var detailed = document.getElementById("demo2");
 var data, url;
+//The current element we are dealing with is in the variable "url"
 
 
 var writtenText, btnClassPrimary, btnClassSecondary;
@@ -30,7 +31,7 @@ switch(localStorage.getItem('theme')){
 
 //Function to display the genres list
 function genreListDisplay() {
-    var genreList = ['Romance', 'Thriller', 'Paranormal', 'Fantasy', 'Young Adult', 'Mystery', 'Dark', 'Contemporary', 'Comedy'];
+    var genreList = ['Genre', 'Romance', 'Thriller', 'Paranormal', 'Fantasy', 'Young Adult', 'Mystery', 'Dark', 'Contemporary', 'Comedy'];
     let selects = document.getElementsByClassName("custom-select");
     for(let i=0; i<selects.length; i++) {
         selects[i].innerHTML = '';
@@ -47,7 +48,29 @@ genreListDisplay();
 
 //Function to display selected genre value
 function genreFilter(text) {
-    console.log(text);
+    main.innerHTML = '';
+    detailed.innerHTML = '';
+    let ratings = new Object();
+    
+    if(text=='Genre') {
+        for (var i = data.length - 1; i >= 0; i--) {
+            let temp = createCards(i);
+            ratings[temp.text] = temp.rating;
+        }
+    }
+    else{
+        url.map((gen, id) => {
+            for(let i=0; i<gen.genre.length; i++){
+                if(gen.genre[i]==text) {
+                    let temp = createCards(id);
+                    ratings[temp.text] = temp.rating;
+                }
+            }
+        });
+    }
+    
+    //call to the rating function
+    getRatings(ratings);
 }
 
 
