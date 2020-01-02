@@ -27,58 +27,97 @@ switch(localStorage.getItem('theme')){
 }
 
 
+
+//Function to display the genres list
+function genreListDisplay() {
+    var genreList = ['Genre', 'Romance', 'Thriller', 'Paranormal', 'Fantasy', 'Young Adult', 'Mystery', 'Dark', 'Contemporary', 'Comedy'];
+    let selects = document.getElementsByClassName("custom-select");
+    for(let i=0; i<selects.length; i++) {
+        selects[i].innerHTML = '';
+        genreList.map((text, id) => {
+            let temp = '<option value="'+text+'">'+text+'</option>';
+            selects[i].innerHTML += temp;
+        });
+    }
+}
+
+genreListDisplay();
+
+
+
+//Function to display selected genre value
+function genreFilter(text) {
+    console.log(text);
+}
+
+
 //Function to display the main page
 //Loads all the books and displays some info for each
 function mainPage() {
     window.scrollTo(0, 0);
-    let ratings = new Object();
-    let urltext = 'http://localhost:3000/'+writtenText.toLowerCase(writtenText)+'/';
+    let urltext = 'http://localhost:3000/' + writtenText.toLowerCase(writtenText) + '/';
 
     xhttp.open('GET', urltext);
     xhttp.send();
-    xhttp.onload = function(){
-        if(this.readyState == 4 && this.status == 200){
+    xhttp.onload = function () {
+        if (this.readyState == 4 && this.status == 200) {
             url = JSON.parse(this.responseText);
+            let ratings = new Object();
+            data = url;
 
-            data = url;  
 
             //Create cards for each book
             main.innerHTML = '';
             detailed.innerHTML = '';
 
-            for(var i=data.length-1; i>=0; i--){
-
-                //add star ratings
-                let temp = data[i].title;
-                temp = temp.split(" ").join("-").toLowerCase();;
-                ratings[temp] = data[i].rating;
-
-                var card = '<div class="card">'+
-                                '<img src="'+data[i].img+'" class="card-img-top" alt="...">'+
-                                '<div class="card-body">'+
-                                    '<h5 class="card-title">'+data[i].title+'</h5>'+
-                                    '<p class="card-text card-author">by '+data[i].author+'</p>'+
-                                    
-                                    //star ratings
-                                    '<div class="'+temp+' star-outer">'+
-                                        '<div class="'+temp+' star-inner"></div>'+
-                                    '</div>'+
-                                    '<span class="number-rating">'+data[i].rating+'</span><br>'+
-
-                                    //button takes to detailsOfBook and passes bookId which then displays details of the book
-                                    '<button type="button" onclick="detailsOfBook(\''+data[i]._id+'\')" class="btn '+ btnClassPrimary +' btn-sm">Details</button>'+
-                                '</div>'+
-                            '</div>';
-
-                main.innerHTML += card;
+            for (var i = data.length - 1; i >= 0; i--) {
+                let temp = createCards(i);
+                ratings[temp.text] = temp.rating;
             }
+
             //call to the rating function
-            getRatings(ratings);     
+            getRatings(ratings);
         }
     }
 }
 
 mainPage();
+
+
+//Function to create individual cards
+function createCards(i) {
+
+    let ratings = new Object();
+    //add star ratings
+    let temp = data[i].title;
+    temp = temp.split(" ").join("-").toLowerCase();;
+
+    var card = '<div class="card">' +
+        '<img src="' + data[i].img + '" class="card-img-top" alt="...">' +
+        '<div class="card-body">' +
+        '<h5 class="card-title">' + data[i].title + '</h5>';
+        if(data[i].series)
+        card+='<p class="card-text card-author" style="color: #9e9e9e; text-align: center;">' + data[i].series + '</p>' ;
+        card+='<p class="card-text card-author">by ' + data[i].author + '</p>' +
+
+        //star ratings
+        '<div class="' + temp + ' star-outer">' +
+        '<div class="' + temp + ' star-inner"></div>' +
+        '</div>' +
+        '<span class="number-rating">' + data[i].rating + '</span><br>' +
+
+        //button takes to detailsOfBook and passes bookId which then displays details of the book
+        '<button type="button" onclick="detailsOfBook(\'' + data[i]._id + '\')" class="btn ' + btnClassPrimary + ' btn-sm">Details</button>' +
+        '</div>' +
+        '</div>';
+
+    main.innerHTML += card;
+    return {
+        text: temp,
+        rating: data[i].rating
+    }
+}
+
 
 
 
@@ -117,18 +156,20 @@ function detailsOfBook(bookId) {
                                 '<button onclick="mainPage()" class="btn '+btnClassPrimary+' btn-sm">Go Back</button>' +
                             '</div>' +
                             '<div class="col info">' +
-                                '<h3>' + url.title + '</h3>' +
-                                '<h5>' + url.author + '</h5>' ;
+                                '<h3>' + url.title + '</h3>';
+                                card+='<h5>' + url.author + '</h5>' ;
+                                if(url.series)
+                                card += '<h6 style="color: #9e9e9e;">' + url.series + '</h6>';
                                 if(url.description)
-                                card += '<p class="descJustify">' + url.description + '</p><hr>';
+                                card += '<p class="descJustify" style="white-space: pre-wrap;">' + url.description + '</p><hr>';
                                 if(url.genre)
                                 card += '<p><b>Genre: </b>' + url.genre + '</p>';
-                                if(url.publisher)
-                                card += '<p><b>Publisher: </b>' + url.publisher + '</p>' ;
+                                // if(url.publisher)
+                                // card += '<p><b>Publisher: </b>' + url.publisher + '</p>' ;
                                 if(url.language)
                                 card += '<p><b>Language: </b>' + url.language + '</p>';
-                                if(url.price)
-                                card += '<p><b>Price: </b>Rs. ' + url.price + ' /-</p>' ;
+                                // if(url.price)
+                                // card += '<p><b>Price: </b>Rs. ' + url.price + ' /-</p>' ;
                                 // if(!url.available)
                                 // card += '<p><b>Issued by: </b>' + url.issuedTo.name + '</p>' ;
                                 if(url.link)
@@ -149,7 +190,7 @@ function detailsOfBook(bookId) {
 
                     
                                 card +=
-                                '<button type="button" onclick="deleteBook(\'' + url._id + '\')" class="btn btn-warning btn-sm btn-left">Delete '+writtenText+'</button>' +
+                                '<button type="button" onclick="deleteBook(\'' + url._id + '\')" class="btn '+btnClassSecondary+' btn-sm btn-left">Delete '+writtenText+'</button>' +
                                 '<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#issueBook">Add to List</button>' ;
                                 
                                     
@@ -262,20 +303,17 @@ function addNewBook() {
     //get details from the html form and create JSON
     var params = {
         "title": document.getElementById("title").value,
+        "series": document.getElementById("series").value,
         "author": document.getElementById("author").value,
-        "price": document.getElementById("price").value,
-        "publisher": document.getElementById("publisher").value,
         "img": document.getElementById("image").value,
         "rating": document.getElementById("rating").value,
         "description": document.getElementById("desc").value,
-        "genre": document.getElementById("genre").value,
+        // "genre": document.getElementById("genre").value,
         "language": document.getElementById("language").value,
-        "paperback": document.getElementById("paperback").checked,
-        "available": document.getElementById("available").checked
+        "online": document.getElementById("online").checked
     };
 
     if (validity(document.getElementById("title")) && 
-        validity(document.getElementById("author")) &&
         validity(document.getElementById("rating")) &&
         validity(document.getElementById("image"))) {
 
@@ -290,16 +328,14 @@ function addNewBook() {
 
                 //resetting values of the modal form
                 document.getElementById("title").value = '';
+                document.getElementById("series").value = '';
                 document.getElementById("author").value = '';
-                document.getElementById("price").value = '';
-                document.getElementById("publisher").value = '';
                 document.getElementById("image").value = '';
                 document.getElementById("rating").value = '';
                 document.getElementById("desc").value = '';
-                document.getElementById("genre").value = '';
+                // document.getElementById("genre").value = '';
                 document.getElementById("language").value = '';
-                document.getElementById("paperback").checked = false;
-                document.getElementById("available").checked = false;
+                document.getElementById("online").checked = false;
 
                 mainPage();
             }    
