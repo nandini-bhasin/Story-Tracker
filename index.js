@@ -30,7 +30,7 @@ switch(localStorage.getItem('theme')){
 
 //Function to display the genres list
 function genreListDisplay() {
-    var genreList = ['Genre', 'Romance', 'Thriller', 'Paranormal', 'Fantasy', 'Young Adult', 'Mystery', 'Dark', 'Contemporary', 'Comedy'];
+    var genreList = ['Romance', 'Thriller', 'Paranormal', 'Fantasy', 'Young Adult', 'Mystery', 'Dark', 'Contemporary', 'Comedy'];
     let selects = document.getElementsByClassName("custom-select");
     for(let i=0; i<selects.length; i++) {
         selects[i].innerHTML = '';
@@ -172,6 +172,10 @@ function detailsOfBook(bookId) {
                                 // card += '<p><b>Price: </b>Rs. ' + url.price + ' /-</p>' ;
                                 // if(!url.available)
                                 // card += '<p><b>Issued by: </b>' + url.issuedTo.name + '</p>' ;
+                                if(url.online)
+                                card += '<p class="price">Offline</p>' ;
+                                if(!url.online)
+                                card += '<p class="price">Online!</p>' ;
                                 if(url.link)
                                 card += '<p><b>Link: </b><a href="' + url.link + '"> '+url.link+'</a></p>' ;
 
@@ -308,8 +312,9 @@ function addNewBook() {
         "img": document.getElementById("image").value,
         "rating": document.getElementById("rating").value,
         "description": document.getElementById("desc").value,
-        // "genre": document.getElementById("genre").value,
+        "genre": $('#genre').val(),
         "language": document.getElementById("language").value,
+        "link": document.getElementById("external").value,
         "online": document.getElementById("online").checked
     };
 
@@ -333,8 +338,9 @@ function addNewBook() {
                 document.getElementById("image").value = '';
                 document.getElementById("rating").value = '';
                 document.getElementById("desc").value = '';
-                // document.getElementById("genre").value = '';
+                $('#genre').val([]);
                 document.getElementById("language").value = '';
+                document.getElementById("external").value = '';
                 document.getElementById("online").checked = false;
 
                 mainPage();

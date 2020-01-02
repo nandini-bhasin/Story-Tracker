@@ -66,7 +66,7 @@
                   <input type="text" class="form-control form-control-sm" id="title" placeholder="Give Book Title" required>
                 </div>
                 <div class="form-group">
-                  <label for="series">Title</label>
+                  <label for="series">Series</label>
                   <input type="text" class="form-control form-control-sm" id="series" placeholder="Give Book Series">
                 </div>
                 <div class="form-group">
@@ -84,7 +84,7 @@
                 <div class="form-group">
                   <label for="genre">Genre</label>
                   <!-- <input type="text" class="form-control form-control-sm" id="genre" placeholder="Genre comma separated"> -->
-                  <select class="custom-select custom-select-sm" name="Genre" multiple onclick="genreFilter(this.value)">
+                  <select class="custom-select custom-select-sm" name="Genre" multiple id="genre">
                     </select>
                 </div>
                 <div class="form-group">
@@ -101,8 +101,8 @@
                   <span id="rateMe1"></span>
                 </div>
                 <div class="form-group">
-                  <label for="outside">External Url</label>
-                  <input type="text" class="form-control form-control-sm" id="outside" placeholder="Give external url">
+                  <label for="external">External Url</label>
+                  <input type="text" class="form-control form-control-sm" id="external" placeholder="Give external url">
                 </div>
                 <!-- <div class="form-group form-check">
                   <input type="checkbox" class="form-check-input" id="paperback">
@@ -239,7 +239,7 @@
             }
           }
 
-</script>
+        </script>
 
     </body>
 </html>
